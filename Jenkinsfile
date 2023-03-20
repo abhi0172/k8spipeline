@@ -6,7 +6,7 @@ pipeline {
 	stages {
 		stage("SCM") {
 			steps {
-				git 'https://github.com/abhi0172/java-web-app.git'
+				git 'https://github.com/abhi0172/k8spipeline.git'
 				}
 			}
 
@@ -18,8 +18,8 @@ pipeline {
 			}
 		stage("Image") {
 			steps {
-				sh 'sudo docker build -t java-repo:$BUILD_TAG .'
-				sh 'sudo docker tag java-repo:$BUILD_TAG abhishek0322/pipeline-java:$BUILD_TAG'
+				sh 'sudo docker build -t k8sdeploy:$BUILD_TAG .'
+				sh 'sudo docker tag k8sdeploy:$BUILD_TAG abhishek0322/deployment:$BUILD_TAG'
 				}
 			}
 				
@@ -32,13 +32,13 @@ pipeline {
 		stage('Push') {
 
 			steps {
-				sh 'sudo docker push abhishek0322/pipeline-java:$BUILD_TAG'
+				sh 'sudo docker push abhishek0322/deployment:$BUILD_TAG'
 			}
 		}
 		stage("QAT Testing") {
 			steps {
 				sh 'sudo docker rm -f $(sudo docker ps -a -q)'
-				sh 'sudo docker run -dit -p 9001:8080  abhishek0322/pipeline-java:$BUILD_TAG'
+				sh 'sudo docker run -dit -p 9001:8080  abhishek0322/deployment:$BUILD_TAG'
 				}
 			}
 		
@@ -52,9 +52,9 @@ pipeline {
 		}
 		stage("Prod Env") {
 			steps {
-			 sshagent(['ec2user']) {
-			    sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.90.81.92 sudo docker rm -f $(sudo docker ps -a -q)' 
-	                    sh "ssh -o StrictHostKeyChecking=no ec2-user@3.90.81.92 sudo docker run  -d  -p  49153:8080  abhishek0322/pipeline-java:$BUILD_TAG"
+			 sshagent(['ubuntu']) {
+			    sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.89.31.255 sudo docker rm -f $(sudo docker ps -a -q)' 
+	                    sh "ssh -o StrictHostKeyChecking=no ec2-user@3.89.31.255 sudo docker run  -d  -p  49153:8080  abhishek0322/deployment:$BUILD_TAG"
 				}
 			}
 		}
