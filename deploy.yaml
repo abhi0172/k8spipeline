@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-app
+  template:
+    metadata:
+      labels:
+        app: simple-app
+    spec:
+      containers:
+      - name: simple-app
+        image: abhishek0322/deployment
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: simple-app
+  ports:
+  - port: 4000
+    targetPort: 4000
+    protocol: TCP
