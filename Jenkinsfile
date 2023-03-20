@@ -56,7 +56,7 @@ pipeline {
 			    sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.89.31.255 sudo docker rm -f $(sudo docker ps -a -q)' 
 	                    sh "ssh -o StrictHostKeyChecking=no ec2-user@3.89.31.255 sudo docker run  -d  -p  49153:8080  abhishek0322/deployment:$BUILD_TAG"
 			    sh "kubectl apply -f deploy.yaml"
-			    sh "kubectl get svc 
+			    sh "kubectl get svc"
 				}
 			}
 		}
