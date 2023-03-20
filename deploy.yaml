@@ -22,7 +22,7 @@ kind: Service
 metadata:
   name: simple-app-service
 spec:
-  type: LoadBalancer
+  type: NodePort 
   selector:
     app: simple-app
   ports:
