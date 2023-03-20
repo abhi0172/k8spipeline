@@ -6,7 +6,7 @@ pipeline {
 	stages {
 		stage("SCM") {
 			steps {
-				git 'https://github.com/abhi0172/k8spipeline.git'
+				git branch: 'main', url: 'https://github.com/abhi0172/k8spipeline.git'
 				}
 			}
 
@@ -48,8 +48,8 @@ pipeline {
 		stage("Prod Env") {
 			steps {
 			 sshagent(['ubuntu']) {
-			    sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.89.31.255 sudo docker rm -f $(sudo docker ps -a -q)' 
-	                    sh "ssh -o StrictHostKeyChecking=no ec2-user@3.89.31.255 sudo docker run  -d  -p  49153:8080  abhishek0322/deployment:$BUILD_TAG"
+			    sh 'ssh -o StrictHostKeyChecking=no ec2-user@3.84.201.184 sudo docker rm -f $(sudo docker ps -a -q)' 
+	            sh "ssh -o StrictHostKeyChecking=no ec2-user@3.84.201.184 sudo docker run  -d  -p  49153:8080  abhishek0322/deployment:$BUILD_TAG"
 			    sh "kubectl apply -f deploy.yaml"
 			    sh "kubectl get svc"
 				}
