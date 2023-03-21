@@ -48,11 +48,11 @@ pipeline {
 		stage("Prod Env") {
 			steps {
 			 sshagent(['ubuntu']) {
-			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.84.201.184 sudo docker rm -f $(sudo docker ps -a -q)' 
-	            sh "ssh -o StrictHostKeyChecking=no ubuntu@3.84.201.184 sudo docker run  -d  -p  49151:80  abhishek0322/deployment:$BUILD_TAG"
-			    sh 'scp -o StrictHostKeyChecking=no deploy.yaml ubuntu@3.84.201.184:/home/ubuntu'
-			    sh 'ssh ubuntu@3.84.201.184 kubectl apply -f .'
-			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.84.201.184 kubectl get svc'
+			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.26.95 sudo docker rm -f $(sudo docker ps -a -q)' 
+	            sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.26.95 sudo docker run  -d  -p  49151:80  abhishek0322/deployment:$BUILD_TAG"
+			    sh 'scp -o StrictHostKeyChecking=no deploy.yaml ubuntu@172.31.26.95:/home/ubuntu'
+			    sh 'ssh ubuntu@172.31.26.95 kubectl apply -f .'
+			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.26.95 kubectl get svc'
 				}
 			}
 		}
